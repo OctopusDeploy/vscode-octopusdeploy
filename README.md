@@ -1,2 +1,1 @@
-# vscode-octopusdeploy
-Octopus Deploy extension for Visual Studio Code
+# Octopus Deploy for Visual Studio Code
