@@ -1,14 +1,23 @@
 {
-    "action": {
+    "Action": {
         "body": [
             "action \"${1}\" {",
-            "\taction_type = \"\"",
+            "\taction_type           = \"${2|Octopus.AzureAppService,Octopus.Script|}\"",
+            "\tchannels              = []",
+            "\tenvironments          = []",
+            "\texcluded_environments = []",
+            "\tis_required           = ${3|false,true|}",
+            "\tproperties            = {",
+            "\t}",
+            "\tnotes                 = \"\"",
+            "\tworker_pool           = \"\"",
+            "\tworker_pool_variable  = \"\"",
             "}"
         ],
         "description": "Define a action",
         "prefix": "action"
     },
-    "channel": {
+    "Channel": {
         "body": [
             "channel \"${1}\" {",
             "\tdescription = \"${2}\"",
@@ -19,20 +28,64 @@
         "description": "Define a channel",
         "prefix": "channel"
     },
-    "rules": {
+    "Connectivity Policy": {
+        "body": [
+            "connectivity_policy {",
+            "}"
+        ],
+        "description": "Define connectivity policy",
+        "prefix": "connectivity-policy"
+    },
+    "Deployment Action Packages": {
+        "body": [
+            "deployment_action_packages {",
+            "}"
+        ],
+        "description": "Define deployment action packages",
+        "prefix": "deployment-action-packages"
+    },
+    "Packages": {
+        "body": [
+            "packages \"${1}\" {",
+            "\tacquisition_location = \"${2|Server|}\"",
+            "\tfeed                 = \"${3|Octopus Server (built-in),AwsElasticContainerRegistry,Docker,GitHub,Helm,Maven,NuGet,OctopusProject|}\"",
+            "\tpackage_id           = \"\"",
+            "\tproperties           = {",
+            "\t}",
+            "}"
+        ],
+        "description": "Define packages",
+        "prefix": "packages"
+    },
+    "Rules": {
         "body": [
             "rules \"${1}\" {",
+            "\ttag           = \"${2}\"",
+            "\tversion_range = \"${3}\"",
             "}"
         ],
         "description": "Define rules",
         "prefix": "rules"
     },
-    "step": {
+    "Step": {
         "body": [
             "step \"${1}\" {",
+            "\tcondition     = \"${2|Always,Failure,Success,Variable|}\"",
+            "\tproperties    = {",
+            "\t}",
+            "\tstart_trigger = \"${3|StartAfterPrevious,StartWithPrevious|}\"",
             "}"
         ],
         "description": "Define a step",
         "prefix": "step"
-    }
+    },
+    "Versioning Policy": {
+        "body": [
+            "versioning_strategy {",
+            "\ttemplate = \"\"",
+            "}"
+        ],
+        "description": "Define versioning policy",
+        "prefix": "versioning-policy"
+    },
 }
