@@ -1,7 +1,7 @@
 {
   "name": "vscode-octopusdeploy",
   "displayName": "Octopus Deploy",
-  "description": "Syntax highlighting for Octopus Deploy",
+  "description": "Octopus Deploy for Visual Studio Code",
   "version": "0.0.1-development",
   "publisher": "Octopus Deploy",
   "engines": {
@@ -20,9 +20,14 @@
   "contributes": {
     "languages": [
       {
-        "aliases": ["Octopus Configuration Language", "ocl"],
+        "aliases": [
+          "Octopus Configuration Language",
+          "ocl"
+        ],
         "configuration": "./language-configuration.json",
-        "extensions": [".ocl .octo"],
+        "extensions": [
+          ".ocl .octo"
+        ],
         "id": "ocl"
       }
     ],
