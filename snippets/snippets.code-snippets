@@ -1,0 +1,38 @@
+{
+    "action": {
+        "body": [
+            "action \"${1}\" {",
+            "\taction_type = \"\"",
+            "}"
+        ],
+        "description": "Define a action",
+        "prefix": "action"
+    },
+    "channel": {
+        "body": [
+            "channel \"${1}\" {",
+            "\tdescription = \"${2}\"",
+            "\tis_default  = ${3|false,true|}",
+            "\tlifecycle   = \"${4}\"",
+            "}"
+        ],
+        "description": "Define a channel",
+        "prefix": "channel"
+    },
+    "rules": {
+        "body": [
+            "rules \"${1}\" {",
+            "}"
+        ],
+        "description": "Define rules",
+        "prefix": "rules"
+    },
+    "step": {
+        "body": [
+            "step \"${1}\" {",
+            "}"
+        ],
+        "description": "Define a step",
+        "prefix": "step"
+    }
+}
