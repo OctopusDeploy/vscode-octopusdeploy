@@ -2,12 +2,46 @@
     "Action": {
         "body": [
             "action \"${1}\" {",
-            "\taction_type           = \"${2|Octopus.AzureAppService,Octopus.Script|}\"",
+            "\taction_type                        = \"${2}\"",
+            "\tcan_be_used_for_project_versioning = ${3|false,true|}",
+            "\tchannels                           = []",
+            "\tcondition                          = \"\"",
+            "\tcontainer                          = {",
+            "\t}",
+            "\tenvironments                       = []",
+            "\texcluded_environments              = []",
+            "\tfeatures                           = {",
+            "\t}",
+            "\tis_disabled                        = ${4|false,true|}",
+            "\tis_required                        = ${4|false,true|}",
+            "\tproperties                         = {",
+            "\t}",
+            "\tnotes                              = \"\"",
+            "\ttenant_tags                        = []",
+            "\tworker_pool                        = \"\"",
+            "\tworker_pool_variable               = \"\"",
+            "}"
+        ],
+        "description": "Define a action",
+        "prefix": "action"
+    },
+    "Action - Run a Script": {
+        "body": [
+            "action \"${1}\" {",
+            "\taction_type           = \"Octopus.Script\"",
             "\tchannels              = []",
             "\tenvironments          = []",
             "\texcluded_environments = []",
             "\tis_required           = ${3|false,true|}",
             "\tproperties            = {",
+            "\t\tOctopus.Action.RunOnServer             = \"${4|false,true|}\"",
+            "\t\tOctopus.Action.Script.ScriptBody       = <<-EOT",
+            "\t\tEOT",
+            "\t\tOctopus.Action.Script.ScriptFileName         = \"\"",
+            "\t\tOctopus.Action.Script.ScriptParameters       = \"\"",
+            "\t\tOctopus.Action.Script.ScriptSource           = \"${5|Inline,Package|}\"",
+            "\t\tOctopus.Action.Script.Syntax                 = \"${6|Bash,CSharp,FSharp,PowerShell,Python|}\"",
+            "\t\tOctopus.Action.SubstituteInFiles.TargetFiles = \"\"",
             "\t}",
             "\tnotes                 = \"\"",
             "\tworker_pool           = \"\"",
@@ -15,7 +49,7 @@
             "}"
         ],
         "description": "Define a action",
-        "prefix": "action"
+        "prefix": "action-script"
     },
     "Channel": {
         "body": [
@@ -47,10 +81,12 @@
     "Packages": {
         "body": [
             "packages \"${1}\" {",
-            "\tacquisition_location = \"${2|Server|}\"",
+            "\tacquisition_location = \"${2|ExecutionTarget,Server|}\"",
             "\tfeed                 = \"${3|Octopus Server (built-in),AwsElasticContainerRegistry,Docker,GitHub,Helm,Maven,NuGet,OctopusProject|}\"",
             "\tpackage_id           = \"\"",
             "\tproperties           = {",
+            "\t\tExtract       = \"True\"",
+            "\t\tSelectionMode = \"immediate\"",
             "\t}",
             "}"
         ],
