@@ -26,7 +26,8 @@
         ],
         "configuration": "./language-configuration.json",
         "extensions": [
-          ".ocl .octo"
+          ".ocl",
+          ".octo"
         ],
         "id": "ocl"
       }
