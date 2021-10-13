@@ -1,7 +1,7 @@
 {
   "name": "Octopus Configuration Language",
   "scopeName": "scope.ocl",
-  "fileTypes": ["ocl", "octo"],
+  "fileTypes": ["ocl"],
   "patterns": [
     {
       "include": "#comments"
@@ -71,13 +71,14 @@
       },
       "patterns": [
         {
-          "include": "#char_escape"
+          "name": "constant.character.escape.ocl",
+          "match": "\\\\."
         }
       ]
     },
     "char_escape": {
-      "match": "(\\\\r|\\\\n|\\\\t|\\\\\\\\)",
-      "name": "constant.character.escape"
+      "match": "\\\\[nrt\"\\\\]|\\\\u(\\h{8}|\\h{4})",
+      "name": "constant.character.escape.ocl"
     },
     "heredoc": {
       "begin": "(\\<\\<\\-?)\\s*(\\w+)\\s*$",
@@ -178,10 +179,151 @@
         }
       ]
     },
+    "comma": {
+      "match": "\\,",
+      "name": "punctuation.separator.ocl"
+    },
+    "brackets": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.brackets.begin.ocl"
+        }
+      },
+      "end": "(\\*?)\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.brackets.end.ocl"
+        },
+        "1": {
+          "name": "keyword.operator.splat.ocl"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comma"
+        },
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#local_identifiers"
+        },
+        {
+          "include": "#literal_values"
+        }
+      ]
+    },
+    "objects": {
+      "name": "meta.braces.ocl",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.braces.begin.ocl"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.braces.end.ocl"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "\\b((?!null|false|true)[[:alpha:]][[:alnum:]._-]*)\\s*(\\=)\\s*",
+          "comment": "Literal, named object key",
+          "captures": {
+            "1": {
+              "name": "meta.mapping.key.ocl string.unquoted.ocl"
+            },
+            "2": {
+              "name": "keyword.operator.ocl"
+            }
+          }
+        },
+        {
+          "match": "\\b((\").*(\"))\\s*(\\=)\\s*",
+          "comment": "String object key",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#named_value_references"
+                }
+              ]
+            },
+            "1": {
+              "name": "meta.mapping.key.ocl string.quoted.double.ocl"
+            },
+            "2": {
+              "name": "punctuation.definition.string.begin.ocl"
+            },
+            "3": {
+              "name": "punctuation.definition.string.end.ocl"
+            },
+            "4": {
+              "name": "keyword.operator.ocl"
+            }
+          }
+        },
+        {
+          "begin": "^\\s*\\(",
+          "comment": "Computed object key (any expression between parens)",
+          "name": "meta.mapping.key.ocl",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.parens.begin.ocl"
+            }
+          },
+          "end": "(\\))\\s*(\\=)\\s*",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.section.parens.end.ocl"
+            },
+            "2": {
+              "name": "keyword.operator.ocl"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#named_value_references"
+            },
+            {
+              "include": "#attribute_access"
+            }
+          ]
+        },
+        {
+          "include": "#object_key_values"
+        }
+      ]
+    },
+    "object_key_values": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#literal_values"
+        },
+        {
+          "include": "#heredoc"
+        }
+      ]
+    },
     "expressions": {
       "patterns": [
         {
           "include": "#literal_values"
+        },
+        {
+          "include": "#brackets"
+        },
+        {
+          "include": "#objects"
         }
       ]
     }
