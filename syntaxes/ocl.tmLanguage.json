@@ -57,7 +57,7 @@
     },
     "string_literals": {
       "begin": "\"",
-      "name": "string.qouted.double.ocl",
+      "name": "string.quoted.double.ocl",
       "beginCaptures": {
         "0": {
           "name": "punctuation.definition.string.begin.ocl"
