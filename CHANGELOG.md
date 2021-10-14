@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.2...v0.1.0) (2021-10-14)
+
+
+### Features
+
+* added VS marketplace badge ([63a0d40](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/63a0d40c8f39fd7d4cb5152272ea4fdb57a9d89e))
+* AutoClosing, AutoSurrounding and Folding ([8dc9f91](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/8dc9f9177aab07252a4e6a2e119ab5faa2276845))
+
 ### 0.0.2 (2021-10-13)
 
 
