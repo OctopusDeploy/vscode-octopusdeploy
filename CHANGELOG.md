@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.4](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.3...v0.0.4) (2021-10-15)
+
+
+### Bug Fixes
+
+* pattern matching for blocks ([#17](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/issues/17)) ([a9da510](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/a9da5108e06daee54e17cfe6c596f991c9e7561e))
+
 ### [0.0.3](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.2...v0.0.3) (2021-10-14)
 
 
