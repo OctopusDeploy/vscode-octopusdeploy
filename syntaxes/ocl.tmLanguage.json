@@ -20,13 +20,13 @@
     "literal_values": {
       "patterns": [
         {
+          "include": "#string_literals"
+        },
+        {
           "include": "#numeric_literals"
         },
         {
           "include": "#language_constants"
-        },
-        {
-          "include": "#string_literals"
         },
         {
           "include": "#heredoc"
@@ -73,12 +73,19 @@
         {
           "name": "constant.character.escape.ocl",
           "match": "\\\\."
+        },
+        {
+          "name": "constant.character.variable.expression.ocl",
+          "begin": "(\\#\\{)",
+          "beginCaptures": {
+            "name": "constant.character.escape.variable.expressions.start.ocl"
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "name": "constant.character.escape.variable.expressions.end.ocl"
+          }
         }
       ]
-    },
-    "char_escape": {
-      "match": "\\\\[nrt\"\\\\]|\\\\u(\\h{8}|\\h{4})",
-      "name": "constant.character.escape.ocl"
     },
     "heredoc": {
       "begin": "(\\<\\<\\-?)\\s*(\\w+)\\s*$",
@@ -142,10 +149,10 @@
     },
     "block": {
       "name": "meta.block.ocl",
-      "begin": "(\\w+)(?:([\\s\\\"\\-[:word:]]*)(\\{))",
+      "begin": "(\\w+)(?:(\\s*[\"]*.*)(\\{))",
       "beginCaptures": {
         "1": {
-          "name": "entity.name.function"
+          "name": "entity.name.function.block.ocl"
         },
         "2": {
           "patterns": [
