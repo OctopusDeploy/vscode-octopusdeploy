@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.4...v0.1.0) (2021-10-18)
+
+
+### Features
+
+* redesigned as a web extension ([c4c3da1](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/c4c3da149b16d043c06805885e0ac576a8809cc4))
+
 ### [0.0.4](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.3...v0.0.4) (2021-10-15)
 
 
