@@ -19,13 +19,16 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<OclNode> {
 		var nodes = new Array<OclNode>();
 		var activeDocument = vscode.window.activeTextEditor?.document;
 
-
 		if (!activeDocument || !activeDocument.languageId.match("ocl")) {
 			return Promise.resolve(nodes);
-		} else if (!element) {
+		}
+
+		if (!element) {
 			nodes.push(new OclNode(treeRootLabel, vscode.TreeItemCollapsibleState.Expanded));
 			return Promise.resolve(nodes);
-		} else if (element && element.label.match(treeRootLabel)) {
+		}
+
+		if (element.label.match(treeRootLabel)) {
 			for (let index = 0; index < activeDocument.lineCount; index++) {
 				const line = activeDocument.lineAt(index);
 				if (line.text.startsWith("step")) {
