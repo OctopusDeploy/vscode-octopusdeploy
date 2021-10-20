@@ -22,7 +22,7 @@ const webExtensionClientConfig = {
 	resolve: {
 		alias: {},
 		extensions: ['.ts', '.js'],
-		fallback: { 'path': false },
+		fallback: { path: require.resolve('path-browserify') },
 		mainFields: ['module', 'main']
 	},
 	module: {
