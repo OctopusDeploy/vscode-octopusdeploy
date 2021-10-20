@@ -1,6 +1,7 @@
-import { ExtensionContext, Uri } from 'vscode';
+import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 import { LanguageClient } from 'vscode-languageclient/browser';
+import { OclOutlineProvider } from './OclOutlineProvider';
 
 const extensionId = 'vscode-octopusdeploy';
 const languageClientName = 'Octopus Deploy for Visual Studio Code';
@@ -8,7 +9,10 @@ const languageClientName = 'Octopus Deploy for Visual Studio Code';
 export function activate(context: ExtensionContext) {
 	console.log(`${extensionId} activated.`);
 
-	// add OCL tree view here
+	window.registerTreeDataProvider(
+		'oclOutline',
+		new OclOutlineProvider(workspace.rootPath)
+	);
 
 	const documentSelector = [{ language: 'ocl' }];
 	const clientOptions: LanguageClientOptions = {
