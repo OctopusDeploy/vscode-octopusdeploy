@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.5...v0.1.0) (2021-10-20)
+
+
+### Features
+
+* added comment for Sean ([c7e9675](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/c7e96753db918ecf69df081da2e0d8c25486d6df))
+* added language server and client ([250bfe0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/250bfe0d2c8a91624cbd81574b84e283b1abc016))
+* added path-browserify to webpack ([ce54efa](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/ce54efafa6e4547125eee207272f903ab75961b1))
+* SVG octopus deploy logo ([c8a24f1](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/c8a24f16f4398f1e8576e027ec3cc0ba9005a406))
+
+
+### Bug Fixes
+
+* refactored code for readability ([139a2af](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/139a2affa66240d9c62ea47cb33b9e24f25e9ff2))
+* removed hover provider ([8457242](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/845724214ce4332ec97a674d8542db5f398abae9))
+* updated dependencies ([abe4466](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/abe4466043e0208c1862595eaf60654ddeeb342e))
+* updated dependencies, reordered attributes ([753178f](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/753178fab95965a128afcaae712735a67d69cd8b))
+
 ### [0.0.5](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.4...v0.0.5) (2021-10-18)
 
 
