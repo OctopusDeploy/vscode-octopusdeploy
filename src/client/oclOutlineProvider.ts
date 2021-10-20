@@ -30,7 +30,7 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<OclNode> {
 				const line = activeDocument.lineAt(index);
 				if (line.text.startsWith("step")) {
 					nodes.push(new OclNode(this.getNodeLabel(line.text), vscode.TreeItemCollapsibleState.None, {
-						command: 'extension.openToPosition',
+						command: 'octopusDeploy.openToPosition',
 						title: '',
 						arguments: [index]
 					}));

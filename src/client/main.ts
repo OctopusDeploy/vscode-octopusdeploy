@@ -16,7 +16,7 @@ export function activate(context: ExtensionContext) {
 
 	commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
 	commands.registerCommand('oclOutline.addEntry', () => commands.executeCommand('workbench.action.files.newUntitledFile')); // TODO - create custom command to set language mode
-	commands.registerCommand('extension.openToPosition', lineNumber => commands.executeCommand('revealLine', {
+	commands.registerCommand('octopusDeploy.openToPosition', lineNumber => commands.executeCommand('revealLine', {
 		lineNumber: lineNumber,
 		at: "top"
 	}));
