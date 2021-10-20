@@ -1,0 +1,20 @@
+{
+  "author": "Octopus Deploy",
+  "engines": {
+    "node": "*"
+  },
+  "name": "vscode-octopusdeploy-server",
+  "description": "LSP Server for Octopus Deploy for Visual Studio Code",
+  "version": "0.0.5",
+  "license": "https://github.com/OctopusDeploy/vscode-octopusdeploy/LICENSE",
+  "publisher": "OctopusDeploy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OctopusDeploy/vscode-octopusdeploy"
+  },
+  "dependencies": {
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.2"
+  },
+  "scripts": {}
+}

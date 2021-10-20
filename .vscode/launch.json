@@ -1,25 +1,41 @@
 {
 	"version": "0.2.0",
+	"compounds": [
+		{
+			"name": "Client + Server",
+			"configurations": [
+				"Launch Client",
+				"Attach to Server"
+			]
+		}
+	],
     "configurations": [
-        {
-            "name": "Extension",
-            "type": "extensionHost",
-            "request": "launch",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
-            ]
-        },
-        {
-            "name": "Run Web Extension in VS Code",
-            "type": "pwa-extensionHost",
-            "debugWebWorkerHost": true,
-            "request": "launch",
-            "args": [
-              "--extensionDevelopmentPath=${workspaceFolder}",
-              "--extensionDevelopmentKind=web"
-            ],
-            "outFiles": ["${workspaceFolder}/dist/web/**/*.js"],
-            "preLaunchTask": "npm: watch-web"
-          }
+		{
+			"name": "Launch Client",
+			"type": "pwa-extensionHost",
+			"debugWebWorkerHost": true,
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}",
+				"--extensionDevelopmentKind=web"
+			],
+			"outFiles": [
+				"${workspaceRoot}/src/client/dist/**/*.js"
+			],
+			"preLaunchTask": {
+				"type": "npm",
+				"script": "watch"
+			}
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Server",
+			"port": 6009,
+			"restart": true,
+			"outFiles": [
+				"${workspaceRoot}/src/server/dist/**/*.js"
+			]
+		}
     ]
 }

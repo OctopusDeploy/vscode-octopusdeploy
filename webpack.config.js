@@ -8,31 +8,22 @@ const path = require('path');
 const webpack = require('webpack');
 
 /** @type WebpackConfig */
-const webExtensionConfig = {
-	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
-	target: 'webworker', // extensions run in a webworker context
+const webExtensionClientConfig = {
+	mode: 'none',
+	target: 'webworker',
 	entry: {
-		'extension': './src/web/extension.ts',
-		'test/suite/index': './src/web/test/suite/index.ts'
+		extension: './src/client/main.ts'
 	},
 	output: {
 		filename: '[name].js',
-		path: path.join(__dirname, './dist/web'),
-		libraryTarget: 'commonjs',
-		devtoolModuleFilenameTemplate: '../../[resource-path]'
+		path: path.join(__dirname, 'dist', 'client'),
+		libraryTarget: 'commonjs'
 	},
 	resolve: {
-		mainFields: ['browser', 'module', 'main'], // look for `browser` entry point in imported node modules
-		extensions: ['.ts', '.js'], // support ts-files and js-files
-		alias: {
-			// provides alternate implementation for node module and source files
-		},
-		fallback: {
-			// Webpack 5 no longer polyfills Node.js core modules automatically.
-			// see https://webpack.js.org/configuration/resolve/#resolvefallback
-			// for the list of Node.js core module polyfills.
-			'assert': require.resolve('assert')
-		}
+		alias: {},
+		extensions: ['.ts', '.js'],
+		fallback: { 'path': false },
+		mainFields: ['module', 'main']
 	},
 	module: {
 		rules: [{
@@ -57,4 +48,46 @@ const webExtensionConfig = {
 	devtool: 'nosources-source-map' // create a source map that points to the original source file
 };
 
-module.exports = [ webExtensionConfig ];
+const webExtensionServerConfig = /** @type WebpackConfig */ {
+	mode: 'none',
+	target: 'webworker',
+	entry: {
+		browserServerMain: './src/server/main.ts',
+	},
+	output: {
+		filename: '[name].js',
+		library: 'serverExportVar',
+		libraryTarget: 'var',
+		path: path.join(__dirname, 'dist', 'server')
+	},
+	resolve: {
+		alias: {},
+		extensions: ['.ts', '.js'], // support ts-files and js-files
+		fallback: {
+			//path: require.resolve("path-browserify")
+		},
+		mainFields: ['module', 'main'],
+	},
+	module: {
+		rules: [
+			{
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'ts-loader',
+					},
+				],
+			},
+		],
+	},
+	externals: {
+		vscode: 'commonjs vscode', // ignored because it doesn't exist
+	},
+	performance: {
+		hints: false,
+	},
+	devtool: 'source-map',
+};
+
+module.exports = [ webExtensionClientConfig, webExtensionServerConfig ];
