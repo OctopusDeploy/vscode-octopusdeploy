@@ -8,6 +8,8 @@ const languageClientName = 'Octopus Deploy for Visual Studio Code';
 export function activate(context: ExtensionContext) {
 	console.log(`${extensionId} activated.`);
 
+	// add OCL tree view here
+
 	const documentSelector = [{ language: 'ocl' }];
 	const clientOptions: LanguageClientOptions = {
 		documentSelector,
