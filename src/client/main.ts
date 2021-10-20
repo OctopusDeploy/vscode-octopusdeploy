@@ -1,4 +1,4 @@
-import { ExtensionContext, Uri, window, workspace } from 'vscode';
+import { ExtensionContext, Uri, window, workspace, commands } from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 import { LanguageClient } from 'vscode-languageclient/browser';
 import { OclOutlineProvider } from './OclOutlineProvider';
@@ -9,10 +9,17 @@ const languageClientName = 'Octopus Deploy for Visual Studio Code';
 export function activate(context: ExtensionContext) {
 	console.log(`${extensionId} activated.`);
 
-	window.registerTreeDataProvider(
-		'oclOutline',
-		new OclOutlineProvider(workspace.rootPath)
-	);
+	const oclOutlineProvider = new OclOutlineProvider(workspace.rootPath);
+
+	window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
+	window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
+
+	commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
+	commands.registerCommand('oclOutline.addEntry', () => commands.executeCommand('workbench.action.files.newUntitledFile')); // TODO - create custom command to set language mode
+	commands.registerCommand('octopusDeploy.openToPosition', lineNumber => commands.executeCommand('revealLine', {
+		lineNumber: lineNumber,
+		at: "top"
+	}));
 
 	const documentSelector = [{ language: 'ocl' }];
 	const clientOptions: LanguageClientOptions = {

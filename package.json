@@ -72,7 +72,20 @@
           "contextualTitle": "Octopus Explorer"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "oclOutline",
+        "contents": "Load an OCL file to see the document outline, or:\n[Add new OCL file](command:oclOutline.addEntry)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "oclOutline.refreshEntry",
+        "title": "Refresh",
+        "category": "Octopus"
+      }
+    ]
   },
   "icon": "assets/icons/octopus-deploy.png",
   "repository": {
