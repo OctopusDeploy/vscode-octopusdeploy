@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.0.7](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.6...v0.0.7) (2021-10-21)
+
+
+### Features
+
+* updated README ([4316e37](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/4316e37f4abe6b4d0cb9c723d49a4c7ec5ef0414))
+
+
+### Miscellaneous Chores
+
+* release 0.0.7 ([d1d1858](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/d1d1858a29829f689c3c03f8f5d6f3547b54d4c1))
+
 ### [0.0.6](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.5...v0.0.6) (2021-10-20)
 
 
