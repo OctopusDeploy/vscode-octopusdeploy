@@ -55,3 +55,20 @@ class OclStepNode extends vscode.TreeItem {
 
 	iconPath = new vscode.ThemeIcon("list-tree");
 }
+
+export class OclOutline {
+	constructor() {
+		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
+
+		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
+		vscode.window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
+
+		vscode.commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
+		// TODO - create custom command to set language mode
+		vscode.commands.registerCommand('oclOutline.addEntry', () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
+		vscode.commands.registerCommand('octopusDeploy.openToPosition', lineNumber => vscode.commands.executeCommand('revealLine', {
+			lineNumber: lineNumber,
+			at: "top"
+		}));
+	}
+}
