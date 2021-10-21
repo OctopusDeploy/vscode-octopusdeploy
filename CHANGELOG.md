@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.6...v0.1.0) (2021-10-21)
+
+
+### Features
+
+* updated README ([4316e37](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/4316e37f4abe6b4d0cb9c723d49a4c7ec5ef0414))
+
 ### [0.0.6](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.5...v0.0.6) (2021-10-20)
 
 
