@@ -1,22 +1,21 @@
 import * as vscode from 'vscode';
 
-export class OclOutlineProvider implements vscode.TreeDataProvider<OclNode> {
+export class OclOutlineProvider implements vscode.TreeDataProvider<OclStepNode> {
 	constructor(private workspaceRoot: string | undefined) { }
 
-	private _onDidChangeTreeData: vscode.EventEmitter<OclNode | undefined | null | void> = new vscode.EventEmitter<OclNode | undefined | null | void>();
-	readonly onDidChangeTreeData: vscode.Event<OclNode | undefined | null | void> = this._onDidChangeTreeData.event;
+	private _onDidChangeTreeData: vscode.EventEmitter<OclStepNode | undefined | null | void> = new vscode.EventEmitter<OclStepNode | undefined | null | void>();
+	readonly onDidChangeTreeData: vscode.Event<OclStepNode | undefined | null | void> = this._onDidChangeTreeData.event;
 
 	refresh(): void {
 		this._onDidChangeTreeData.fire();
 	}
 
-	getTreeItem(element: OclNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
+	getTreeItem(element: OclStepNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
 		return element;
 	}
 
-	getChildren(element?: OclNode): Thenable<OclNode[]> {
-		const treeRootLabel = "Document Root";
-		var nodes = new Array<OclNode>();
+	getChildren(element?: OclStepNode): Thenable<OclStepNode[]> {
+		var nodes = new Array<OclStepNode>();
 		var activeDocument = vscode.window.activeTextEditor?.document;
 
 		if (!activeDocument || !activeDocument.languageId.match("ocl")) {
@@ -24,15 +23,10 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<OclNode> {
 		}
 
 		if (!element) {
-			nodes.push(new OclNode(treeRootLabel, vscode.TreeItemCollapsibleState.Expanded));
-			return Promise.resolve(nodes);
-		}
-
-		if (element.label.match(treeRootLabel)) {
 			for (let index = 0; index < activeDocument.lineCount; index++) {
 				const line = activeDocument.lineAt(index);
 				if (line.text.startsWith("step")) {
-					nodes.push(new OclNode(this.getNodeLabel(line.text), vscode.TreeItemCollapsibleState.None, {
+					nodes.push(new OclStepNode(this.getNodeLabel(line.text), vscode.TreeItemCollapsibleState.None, {
 						command: 'octopusDeploy.openToPosition',
 						title: '',
 						arguments: [index]
@@ -50,7 +44,7 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<OclNode> {
 
 }
 
-class OclNode extends vscode.TreeItem {
+class OclStepNode extends vscode.TreeItem {
 	constructor(
 		public readonly label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -58,4 +52,6 @@ class OclNode extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 	}
+
+	iconPath = new vscode.ThemeIcon("list-tree");
 }
