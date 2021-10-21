@@ -1,4 +1,4 @@
-import { ExtensionContext, Uri, window, workspace, commands } from 'vscode';
+import { ExtensionContext, Uri } from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 import { LanguageClient } from 'vscode-languageclient/browser';
 import { OclOutline } from './OclOutlineProvider';
