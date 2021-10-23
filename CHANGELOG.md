@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.8...v0.1.0) (2021-10-23)
+
+
+### Features
+
+* updated tree view look and feel ([1e769db](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/1e769dbee1bbe6445308912b9bd35ffe0a9255ff))
+
+
+### Bug Fixes
+
+* removed color provider ([7d81a62](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/7d81a62175d49a0998bc846bd423205eff1ab64f))
+
 ### [0.0.8](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.7...v0.0.8) (2021-10-23)
 
 
