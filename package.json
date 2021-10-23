@@ -3,7 +3,7 @@
   "name": "vscode-octopusdeploy",
   "displayName": "Octopus Deploy",
   "description": "Octopus Deploy for Visual Studio Code",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "publisher": "OctopusDeploy",
   "engines": {
     "vscode": "^1.61.0"
