@@ -4,6 +4,10 @@
 
 Octopus Deploy for Visual Studio Code is an extension that supports the Octopus Configuration Language (OCL).
 
+<img width="1500" alt="image" src="https://user-images.githubusercontent.com/71493/138542830-d2f8f81f-f852-4da3-bd0e-9e4173c465ef.png">
+
+
+
 ## Features
 
 - Syntax highlighting of OCL files
