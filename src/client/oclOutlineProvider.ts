@@ -1,7 +1,5 @@
 import {
-	Command,
 	commands,
-	Event,
 	EventEmitter,
 	ProviderResult,
 	ThemeIcon,
@@ -14,7 +12,6 @@ import {
 import {
 	AST,
 	BlockNode,
-	DictionaryNode,
 	Lexer,
 	ASTNode,
 	NodeType,
@@ -37,12 +34,13 @@ export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
 	readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
 	refresh(): void {
+		console.log("refresh");
 		this._onDidChangeTreeData.fire(undefined);
 	}
 
 	getTreeItem(item: BlockNode | AttributeNode): TreeItem | Thenable<TreeItem> {
 		const numberOfBlockChildren = item.children.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE).length;
-		const state = numberOfBlockChildren === 0 ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Collapsed;
+		const state = numberOfBlockChildren === 0 ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Expanded;
 
 		const treeItem = new TreeItem(item.name.value, state);
 		treeItem.command = {
@@ -89,7 +87,11 @@ export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
 				}
 				break;
 			case NodeType.BLOCK_NODE:
-				treeItem.iconPath = new ThemeIcon("list-tree");
+				if (item.name.value === "action") {
+					treeItem.iconPath = new ThemeIcon("play");
+				} else {
+					treeItem.iconPath = new ThemeIcon("symbol-module");
+				}
 				break;
 			default:
 				treeItem.iconPath = new ThemeIcon("symbol-property");
