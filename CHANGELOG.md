@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.0.8](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.7...v0.0.8) (2021-10-23)
+
+
+### Features
+
+* applied AST to OCL view ([dba8394](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/dba83942337b5bae6973abb8e3a1efb2beb57b73))
+
+
+### Miscellaneous Chores
+
+* release 0.0.8 ([3dfd91a](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/3dfd91a17b3ff031cf62d510c7f988dfee4e61f3))
+
 ### [0.0.7](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.6...v0.0.7) (2021-10-21)
 
 
