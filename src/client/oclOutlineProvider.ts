@@ -1,72 +1,125 @@
-import * as vscode from 'vscode';
+import {
+	Command,
+	commands,
+	Event,
+	EventEmitter,
+	ProviderResult,
+	ThemeIcon,
+	TreeDataProvider,
+	TreeItem,
+	TreeItemCollapsibleState,
+	window,
+	workspace
+} from 'vscode';
+import {
+	AST,
+	BlockNode,
+	DictionaryNode,
+	Lexer,
+	ASTNode,
+	NodeType,
+	Parser,
+	AttributeNode,
+	LiteralType
+} from '@octopusdeploy/ocl';
 
-export class OclOutlineProvider implements vscode.TreeDataProvider<OclStepNode> {
-	constructor(private workspaceRoot: string | undefined) { }
+export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
+	constructor(private workspaceRoot: string | undefined) {
+		var activeDocument = window.activeTextEditor?.document;
+		const lexer = new Lexer(activeDocument!.getText());
+		const parser = new Parser(lexer);
+		this.ast = parser.getAST();
+	}
 
-	private _onDidChangeTreeData: vscode.EventEmitter<OclStepNode | undefined | null | void> = new vscode.EventEmitter<OclStepNode | undefined | null | void>();
-	readonly onDidChangeTreeData: vscode.Event<OclStepNode | undefined | null | void> = this._onDidChangeTreeData.event;
+	public ast: AST = [];
+
+	private _onDidChangeTreeData = new EventEmitter<BlockNode | undefined>();
+	readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
 	refresh(): void {
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 
-	getTreeItem(element: OclStepNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
-		return element;
-	}
+	getTreeItem(item: BlockNode | AttributeNode): TreeItem | Thenable<TreeItem> {
+		const numberOfBlockChildren = item.children.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE).length;
+		const state = numberOfBlockChildren === 0 ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Collapsed;
 
-	getChildren(element?: OclStepNode): Thenable<OclStepNode[]> {
-		var nodes = new Array<OclStepNode>();
-		var activeDocument = vscode.window.activeTextEditor?.document;
+		const treeItem = new TreeItem(item.name.value, state);
+		treeItem.command = {
+			command: 'octopusDeploy.openToPosition',
+			title: '',
+			tooltip: ``,
+			arguments: [item.name.ln - 1]
+		};
 
-		if (!activeDocument || !activeDocument.languageId.match("ocl")) {
-			return Promise.resolve(nodes);
-		}
-
-		if (!element) {
-			for (let index = 0; index < activeDocument.lineCount; index++) {
-				const line = activeDocument.lineAt(index);
-				if (line.text.startsWith("step")) {
-					nodes.push(new OclStepNode(this.getNodeLabel(line.text), vscode.TreeItemCollapsibleState.None, {
-						command: 'octopusDeploy.openToPosition',
-						title: '',
-						arguments: [index]
-					}));
+		var description = '';
+		if ("labels" in item) {
+			if (item.labels?.length) {
+				for (const label of item.labels) {
+					description = label.value.value + " ";
 				}
+				description = description.trim();
 			}
 		}
+		treeItem.description = description;
 
-		return Promise.resolve(nodes);
+		switch (item.type) {
+			case NodeType.ATTRIBUTE_NODE:
+				treeItem.iconPath = new ThemeIcon("symbol-property");
+				if (item.children.length > 0) {
+					const child = item.children[0];
+					switch (child.type) {
+						case NodeType.ARRAY_NODE:
+							treeItem.iconPath = new ThemeIcon("array");
+							break;
+						case NodeType.LITERAL_NODE:
+							treeItem.description = child.value.value;
+							treeItem.iconPath = new ThemeIcon("symbol-string");
+							if (child.literalType === LiteralType.TRUE || child.literalType === LiteralType.FALSE) {
+								treeItem.iconPath = new ThemeIcon("symbol-boolean");
+							}
+							if (child.literalType === LiteralType.INTEGER || child.literalType === LiteralType.DECIMAL) {
+								treeItem.iconPath = new ThemeIcon("symbol-number");
+							}
+							break;
+						case NodeType.DICTIONARY_NODE:
+							treeItem.iconPath = new ThemeIcon("list-unordered");
+							break;
+					}
+				}
+				break;
+			case NodeType.BLOCK_NODE:
+				treeItem.iconPath = new ThemeIcon("list-tree");
+				break;
+			default:
+				treeItem.iconPath = new ThemeIcon("symbol-property");
+				break;
+		}
+
+		treeItem.tooltip = `${treeItem.description} ${treeItem.label}`;
+
+		return treeItem;
 	}
 
-	private getNodeLabel(lineText: string): string {
-		return lineText.split('"')[1];
+	getChildren(item?: BlockNode | AttributeNode): ProviderResult<ASTNode[]> {
+		if (item) {
+			return item.children.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE);
+		}
+		return this.ast.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE);
 	}
-
-}
-
-class OclStepNode extends vscode.TreeItem {
-	constructor(
-		public readonly label: string,
-		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-		public readonly command?: vscode.Command
-	) {
-		super(label, collapsibleState);
-	}
-
-	iconPath = new vscode.ThemeIcon("list-tree");
 }
 
 export class OclOutline {
 	constructor() {
-		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
+		const oclOutlineProvider = new OclOutlineProvider(workspace.rootPath);
 
-		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
-		vscode.window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
+		window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
+		window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
 
-		vscode.commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
+		commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
 		// TODO - create custom command to set language mode
-		vscode.commands.registerCommand('oclOutline.addEntry', () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
-		vscode.commands.registerCommand('octopusDeploy.openToPosition', lineNumber => vscode.commands.executeCommand('revealLine', {
+		commands.registerCommand('oclOutline.addEntry', () => commands.executeCommand('workbench.action.files.newUntitledFile'));
+		commands.registerCommand('octopusDeploy.openToPosition', lineNumber => commands.executeCommand('revealLine', {
 			lineNumber: lineNumber,
 			at: "top"
 		}));
