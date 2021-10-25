@@ -129,7 +129,6 @@ export class OclOutline {
 
 		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
 		vscode.window.onDidChangeActiveTextEditor(e => {
-			console.log(`Language ID: ${e?.document.languageId}`);
 			if (e?.document.languageId === "ocl") {
 				oclOutlineProvider.refresh();
 			} else {
