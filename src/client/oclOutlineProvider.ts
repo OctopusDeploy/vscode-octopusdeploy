@@ -112,8 +112,6 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 				break;
 		}
 
-		treeItem.tooltip = `${treeItem.description} ${treeItem.label}`;
-
 		return treeItem;
 	}
 
