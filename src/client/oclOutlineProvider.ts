@@ -12,7 +12,6 @@ import {
 
 export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	constructor(private workspaceRoot: string | undefined) {
-		console.log("constructor");
 		if (vscode.window.activeTextEditor) {
 			var activeDocument = vscode.window.activeTextEditor.document;
 
@@ -36,14 +35,11 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	}
 
 	refresh(): void {
-		console.log("refresh");
 		if (vscode.window.activeTextEditor) {
 			var activeDocument = vscode.window.activeTextEditor.document;
 
 			if (activeDocument) {
 				const text = activeDocument.getText();
-				console.log(`Text: ${text}`);
-
 				const lexer = new Lexer(text);
 				const parser = new Parser(lexer);
 				this.ast = parser.getAST();
@@ -134,9 +130,13 @@ export class OclOutline {
 		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
 
 		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
-		vscode.window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
-		vscode.window.onDidChangeActiveTerminal(e => {
-			console.log(`Active terminal changed, name=${e ? e.name : 'undefined'}`);
+		vscode.window.onDidChangeActiveTextEditor(e => {
+			console.log(`Language ID: ${e?.document.languageId}`);
+			if (e?.document.languageId === "ocl") {
+				oclOutlineProvider.refresh();
+			} else {
+				oclOutlineProvider.clear();
+			}
 		});
 
 		vscode.commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
