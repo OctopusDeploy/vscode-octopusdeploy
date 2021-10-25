@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.11](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.10...v0.0.11) (2021-10-25)
+
+
+### Bug Fixes
+
+* updated tree view only if an OCL file is loaded ([f8131a4](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/f8131a4d6323f570135908665bdb0a0837d31f1e))
+
 ### [0.0.10](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.9...v0.0.10) (2021-10-25)
 
 
