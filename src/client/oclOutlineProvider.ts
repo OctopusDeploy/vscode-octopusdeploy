@@ -1,14 +1,4 @@
-import {
-	commands,
-	EventEmitter,
-	ProviderResult,
-	ThemeIcon,
-	TreeDataProvider,
-	TreeItem,
-	TreeItemCollapsibleState,
-	window,
-	workspace
-} from 'vscode';
+import * as vscode from 'vscode';
 import {
 	AST,
 	BlockNode,
@@ -20,35 +10,63 @@ import {
 	LiteralType
 } from '@octopusdeploy/ocl';
 
-export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
+export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	constructor(private workspaceRoot: string | undefined) {
-		var activeDocument = window.activeTextEditor?.document;
-		const lexer = new Lexer(activeDocument!.getText());
-		const parser = new Parser(lexer);
-		this.ast = parser.getAST();
+		console.log("constructor");
+		if (vscode.window.activeTextEditor) {
+			var activeDocument = vscode.window.activeTextEditor.document;
+
+			if (activeDocument) {
+				const text = activeDocument.getText();
+				const lexer = new Lexer(text);
+				const parser = new Parser(lexer);
+				this.ast = parser.getAST();
+			}
+		}
 	}
 
 	public ast: AST = [];
 
-	private _onDidChangeTreeData = new EventEmitter<BlockNode | undefined>();
-	readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
+	private _onDidChangeTreeData: vscode.EventEmitter<ASTNode | undefined | null | void> = new vscode.EventEmitter<ASTNode | undefined | null | void>();
+	readonly onDidChangeTreeData: vscode.Event<ASTNode | undefined | null | void> = this._onDidChangeTreeData.event;
+
+	clear() {
+		this.ast = [];
+		this._onDidChangeTreeData.fire();
+	}
 
 	refresh(): void {
 		console.log("refresh");
-		this._onDidChangeTreeData.fire(undefined);
+		if (vscode.window.activeTextEditor) {
+			var activeDocument = vscode.window.activeTextEditor.document;
+
+			if (activeDocument) {
+				const text = activeDocument.getText();
+				console.log(`Text: ${text}`);
+
+				const lexer = new Lexer(text);
+				const parser = new Parser(lexer);
+				this.ast = parser.getAST();
+			}
+		}
+		this._onDidChangeTreeData.fire();
 	}
 
-	getTreeItem(item: BlockNode | AttributeNode): TreeItem | Thenable<TreeItem> {
-		const numberOfBlockChildren = item.children.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE).length;
-		const state = numberOfBlockChildren === 0 ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Expanded;
+	getTreeItem(item: ASTNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
+		const numberOfBlockChildren = item.children?.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE).length;
+		const state = numberOfBlockChildren === 0 ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded;
+		const label = "name" in item ? item.name.value : "";
 
-		const treeItem = new TreeItem(item.name.value, state);
-		treeItem.command = {
-			command: 'octopusDeploy.openToPosition',
-			title: '',
-			tooltip: ``,
-			arguments: [item.name.ln - 1]
-		};
+		const treeItem = new vscode.TreeItem(label, state);
+
+		if ("name" in item) {
+			treeItem.command = {
+				command: 'octopusDeploy.openToPosition',
+				title: '',
+				tooltip: ``,
+				arguments: [item.name.ln - 1]
+			};
+		}
 
 		var description = '';
 		if ("labels" in item) {
@@ -63,38 +81,38 @@ export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
 
 		switch (item.type) {
 			case NodeType.ATTRIBUTE_NODE:
-				treeItem.iconPath = new ThemeIcon("symbol-property");
+				treeItem.iconPath = new vscode.ThemeIcon("symbol-property");
 				if (item.children.length > 0) {
 					const child = item.children[0];
 					switch (child.type) {
 						case NodeType.ARRAY_NODE:
-							treeItem.iconPath = new ThemeIcon("array");
+							treeItem.iconPath = new vscode.ThemeIcon("array");
 							break;
 						case NodeType.LITERAL_NODE:
 							treeItem.description = child.value.value;
-							treeItem.iconPath = new ThemeIcon("symbol-string");
+							treeItem.iconPath = new vscode.ThemeIcon("symbol-string");
 							if (child.literalType === LiteralType.TRUE || child.literalType === LiteralType.FALSE) {
-								treeItem.iconPath = new ThemeIcon("symbol-boolean");
+								treeItem.iconPath = new vscode.ThemeIcon("symbol-boolean");
 							}
 							if (child.literalType === LiteralType.INTEGER || child.literalType === LiteralType.DECIMAL) {
-								treeItem.iconPath = new ThemeIcon("symbol-number");
+								treeItem.iconPath = new vscode.ThemeIcon("symbol-number");
 							}
 							break;
 						case NodeType.DICTIONARY_NODE:
-							treeItem.iconPath = new ThemeIcon("list-unordered");
+							treeItem.iconPath = new vscode.ThemeIcon("list-unordered");
 							break;
 					}
 				}
 				break;
 			case NodeType.BLOCK_NODE:
 				if (item.name.value === "action") {
-					treeItem.iconPath = new ThemeIcon("play");
+					treeItem.iconPath = new vscode.ThemeIcon("play");
 				} else {
-					treeItem.iconPath = new ThemeIcon("symbol-module");
+					treeItem.iconPath = new vscode.ThemeIcon("symbol-module");
 				}
 				break;
 			default:
-				treeItem.iconPath = new ThemeIcon("symbol-property");
+				treeItem.iconPath = new vscode.ThemeIcon("symbol-property");
 				break;
 		}
 
@@ -103,9 +121,9 @@ export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
 		return treeItem;
 	}
 
-	getChildren(item?: BlockNode | AttributeNode): ProviderResult<ASTNode[]> {
+	getChildren(item?: ASTNode): vscode.ProviderResult<ASTNode[]> {
 		if (item) {
-			return item.children.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE);
+			return item.children?.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE);
 		}
 		return this.ast.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE);
 	}
@@ -113,15 +131,18 @@ export class OclOutlineProvider implements TreeDataProvider<ASTNode> {
 
 export class OclOutline {
 	constructor() {
-		const oclOutlineProvider = new OclOutlineProvider(workspace.rootPath);
+		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
 
-		window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
-		window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
+		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
+		vscode.window.onDidChangeActiveTextEditor(() => oclOutlineProvider.refresh());
+		vscode.window.onDidChangeActiveTerminal(e => {
+			console.log(`Active terminal changed, name=${e ? e.name : 'undefined'}`);
+		});
 
-		commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
+		vscode.commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
 		// TODO - create custom command to set language mode
-		commands.registerCommand('oclOutline.addEntry', () => commands.executeCommand('workbench.action.files.newUntitledFile'));
-		commands.registerCommand('octopusDeploy.openToPosition', lineNumber => commands.executeCommand('revealLine', {
+		vscode.commands.registerCommand('oclOutline.addEntry', () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
+		vscode.commands.registerCommand('octopusDeploy.openToPosition', lineNumber => vscode.commands.executeCommand('revealLine', {
 			lineNumber: lineNumber,
 			at: "top"
 		}));
