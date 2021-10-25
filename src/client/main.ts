@@ -5,13 +5,14 @@ import { OclOutline } from './OclOutlineProvider';
 
 const extensionId = 'vscode-octopusdeploy';
 const languageClientName = 'Octopus Deploy for Visual Studio Code';
+const languageId = 'ocl';
 
 export function activate(context: ExtensionContext) {
 	console.log(`${extensionId} activated.`);
 
 	new OclOutline();
 
-	const documentSelector = [{ language: 'ocl' }];
+	const documentSelector = [{ language: languageId }];
 	const clientOptions: LanguageClientOptions = {
 		documentSelector,
 		synchronize: {},
