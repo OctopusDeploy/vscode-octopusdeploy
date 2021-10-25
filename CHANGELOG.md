@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.10](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.9...v0.0.10) (2021-10-25)
+
+
+### Bug Fixes
+
+* updated OCL view to incorporate AST nodes ([196bf56](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/196bf56210c44adc658171683709f371ede13fe9))
+
 ### [0.0.9](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.8...v0.0.9) (2021-10-23)
 
 
