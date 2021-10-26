@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.0.12](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.11...v0.0.12) (2021-10-26)
+
+
+### Bug Fixes
+
+* removed console statement ([db9be98](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/db9be98b40ecf2f14c0cf481890e828ccc0bfbc7))
+* removed tooltip ([f858e06](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/f858e06265c81d3e709586dd254964ac26244410))
+
 ### [0.0.11](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.10...v0.0.11) (2021-10-25)
 
 
