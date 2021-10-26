@@ -1,30 +1,14 @@
-name: Release & publish to marketplaces
 on:
   push:
     branches:
       - main
+name: release-please
 jobs:
-  build:
+  release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: GoogleCloudPlatform/release-please-action@v2
-        id: release
         with:
-          package-name: release-please-action
-          release-type: node
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
-        if: ${{ steps.release.outputs.release_created }}
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
-          registry-url: "https://registry.npmjs.org"
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm ci
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm run deploy
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        if: ${{ steps.release.outputs.release_created }}
+          release-type: node
+          package-name: release-please-action
