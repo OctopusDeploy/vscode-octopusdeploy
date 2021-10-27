@@ -7,6 +7,13 @@
 
 * moved string to constants file ([bee536f](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/bee536fdb744a2fb31239923fab23e4ad299c967))
 
+### [0.0.13](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.12...v0.0.13) (2021-10-27)
+
+
+### Bug Fixes
+
+* moved string to constants file ([bee536f](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/bee536fdb744a2fb31239923fab23e4ad299c967))
+
 ### [0.0.12](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.11...v0.0.12) (2021-10-26)
 
 
