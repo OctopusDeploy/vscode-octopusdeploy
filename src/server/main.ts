@@ -1,10 +1,9 @@
 import { createConnection, BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageserver/browser';
 import { InitializeParams, InitializeResult, ServerCapabilities, TextDocuments } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import { EXTENSION_ID } from './constants';
 
-const extensionId = 'vscode-octopusdeploy';
-
-console.log(`running server ${extensionId}`);
+console.log(`running server ${EXTENSION_ID}`);
 
 const messageReader = new BrowserMessageReader(self);
 const messageWriter = new BrowserMessageWriter(self);
