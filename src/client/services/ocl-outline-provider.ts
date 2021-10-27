@@ -1,14 +1,13 @@
 import * as vscode from 'vscode';
 import {
 	AST,
-	BlockNode,
 	Lexer,
 	ASTNode,
 	NodeType,
 	Parser,
-	AttributeNode,
 	LiteralType
 } from '@octopusdeploy/ocl';
+import { OCL_EXPLORER_ID, OCL_LANGUAGE_ID, OCL_OUTLINE_ADD_ENTRY_CMD, OCL_OUTLINE_REFRESH_ENTRY_CMD, OPEN_TO_POSITION_CMD } from '../constants';
 
 export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	constructor(private workspaceRoot: string | undefined) {
@@ -51,13 +50,13 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	getTreeItem(item: ASTNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
 		const numberOfBlockChildren = item.children?.filter(n => n.type === NodeType.BLOCK_NODE || n.type === NodeType.ATTRIBUTE_NODE).length;
 		const state = numberOfBlockChildren === 0 ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded;
-		const label = "name" in item ? item.name.value : "";
+		const label = 'name' in item ? item.name.value : '';
 
 		const treeItem = new vscode.TreeItem(label, state);
 
-		if ("name" in item) {
+		if ('name' in item) {
 			treeItem.command = {
-				command: 'octopusDeploy.openToPosition',
+				command: OPEN_TO_POSITION_CMD,
 				title: '',
 				tooltip: ``,
 				arguments: [item.name.ln - 1]
@@ -65,10 +64,10 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 		}
 
 		var description = '';
-		if ("labels" in item) {
+		if ('labels' in item) {
 			if (item.labels?.length) {
 				for (const label of item.labels) {
-					description = label.value.value + " ";
+					description = label.value.value + ' ';
 				}
 				description = description.trim();
 			}
@@ -77,38 +76,38 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 
 		switch (item.type) {
 			case NodeType.ATTRIBUTE_NODE:
-				treeItem.iconPath = new vscode.ThemeIcon("symbol-property");
+				treeItem.iconPath = new vscode.ThemeIcon('symbol-property');
 				if (item.children.length > 0) {
 					const child = item.children[0];
 					switch (child.type) {
 						case NodeType.ARRAY_NODE:
-							treeItem.iconPath = new vscode.ThemeIcon("array");
+							treeItem.iconPath = new vscode.ThemeIcon('array');
 							break;
 						case NodeType.LITERAL_NODE:
 							treeItem.description = child.value.value;
-							treeItem.iconPath = new vscode.ThemeIcon("symbol-string");
+							treeItem.iconPath = new vscode.ThemeIcon('symbol-string');
 							if (child.literalType === LiteralType.TRUE || child.literalType === LiteralType.FALSE) {
-								treeItem.iconPath = new vscode.ThemeIcon("symbol-boolean");
+								treeItem.iconPath = new vscode.ThemeIcon('symbol-boolean');
 							}
 							if (child.literalType === LiteralType.INTEGER || child.literalType === LiteralType.DECIMAL) {
-								treeItem.iconPath = new vscode.ThemeIcon("symbol-number");
+								treeItem.iconPath = new vscode.ThemeIcon('symbol-number');
 							}
 							break;
 						case NodeType.DICTIONARY_NODE:
-							treeItem.iconPath = new vscode.ThemeIcon("list-unordered");
+							treeItem.iconPath = new vscode.ThemeIcon('list-unordered');
 							break;
 					}
 				}
 				break;
 			case NodeType.BLOCK_NODE:
-				if (item.name.value === "action") {
-					treeItem.iconPath = new vscode.ThemeIcon("play");
+				if (item.name.value === 'action') {
+					treeItem.iconPath = new vscode.ThemeIcon('play');
 				} else {
-					treeItem.iconPath = new vscode.ThemeIcon("symbol-module");
+					treeItem.iconPath = new vscode.ThemeIcon('symbol-module');
 				}
 				break;
 			default:
-				treeItem.iconPath = new vscode.ThemeIcon("symbol-property");
+				treeItem.iconPath = new vscode.ThemeIcon('symbol-property');
 				break;
 		}
 
@@ -127,21 +126,21 @@ export class OclOutline {
 	constructor() {
 		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
 
-		vscode.window.registerTreeDataProvider('oclOutline', oclOutlineProvider);
+		vscode.window.registerTreeDataProvider(OCL_EXPLORER_ID, oclOutlineProvider);
 		vscode.window.onDidChangeActiveTextEditor(e => {
-			if (e?.document.languageId === "ocl") {
+			if (e?.document.languageId === OCL_LANGUAGE_ID) {
 				oclOutlineProvider.refresh();
 			} else {
 				oclOutlineProvider.clear();
 			}
 		});
 
-		vscode.commands.registerCommand('oclOutline.refreshEntry', () => oclOutlineProvider.refresh());
+		vscode.commands.registerCommand(OCL_OUTLINE_REFRESH_ENTRY_CMD, () => oclOutlineProvider.refresh());
 		// TODO - create custom command to set language mode
-		vscode.commands.registerCommand('oclOutline.addEntry', () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
-		vscode.commands.registerCommand('octopusDeploy.openToPosition', lineNumber => vscode.commands.executeCommand('revealLine', {
+		vscode.commands.registerCommand(OCL_OUTLINE_ADD_ENTRY_CMD, () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
+		vscode.commands.registerCommand(OPEN_TO_POSITION_CMD, lineNumber => vscode.commands.executeCommand('revealLine', {
 			lineNumber: lineNumber,
-			at: "top"
+			at: 'top'
 		}));
 	}
 }

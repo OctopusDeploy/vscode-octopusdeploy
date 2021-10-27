@@ -8,5 +8,5 @@
 		"target": "es2019"
 	},
 	"exclude": ["node_modules", ".vscode-test-web"],
-	"include": ["main.ts"]
+	"include": ["extension.ts"]
 }

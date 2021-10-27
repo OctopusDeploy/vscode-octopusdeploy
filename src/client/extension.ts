@@ -1,18 +1,15 @@
 import { ExtensionContext, Uri } from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 import { LanguageClient } from 'vscode-languageclient/browser';
-import { OclOutline } from './OclOutlineProvider';
-
-const extensionId = 'vscode-octopusdeploy';
-const languageClientName = 'Octopus Deploy for Visual Studio Code';
-const languageId = 'ocl';
+import { EXTENSION_ID, LANGUAGE_CLIENT_NAME, OCL_LANGUAGE_ID, SETUP_API_KEY_CMD } from './constants';
+import { OclOutline } from './services/ocl-outline-provider';
 
 export function activate(context: ExtensionContext) {
-	console.log(`${extensionId} activated.`);
+	console.log(`${EXTENSION_ID} activated.`);
 
 	new OclOutline();
 
-	const documentSelector = [{ language: languageId }];
+	const documentSelector = [{ language: OCL_LANGUAGE_ID }];
 	const clientOptions: LanguageClientOptions = {
 		documentSelector,
 		synchronize: {},
@@ -24,7 +21,7 @@ export function activate(context: ExtensionContext) {
 	context.subscriptions.push(disposable);
 
 	client.onReady().then(() => {
-		console.log(`${extensionId} server is ready`);
+		console.log(`${EXTENSION_ID} server is ready`);
 	});
 }
 
@@ -34,5 +31,5 @@ function createWorkerLanguageClient(context: ExtensionContext, clientOptions: La
 	const worker = new Worker(serverMain.toString());
 
 	// create the client to communicate with language server running in worker
-	return new LanguageClient(extensionId, languageClientName, clientOptions, worker);
+	return new LanguageClient(EXTENSION_ID, LANGUAGE_CLIENT_NAME, clientOptions, worker);
 }

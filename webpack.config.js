@@ -12,7 +12,7 @@ const webExtensionClientConfig = {
 	mode: 'none',
 	target: 'webworker',
 	entry: {
-		extension: './src/client/main.ts'
+		extension: './src/client/extension.ts'
 	},
 	output: {
 		filename: '[name].js',
