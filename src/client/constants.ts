@@ -7,6 +7,9 @@ export const LANGUAGE_CLIENT_NAME = 'Octopus Deploy for Visual Studio Code';
 export const OCL_EXPLORER_ID = 'oclOutline';
 export const OCL_LANGUAGE_ID = 'ocl';
 
+// user settings
+export const EXTENSION_CONFIGURATION_KEY = 'octopus';
+
 // commands
 export const SETUP_API_KEY_CMD = `${OD_COMMAND_PREFIX}.setupApiKey`;
 export const OCL_OUTLINE_REFRESH_ENTRY_CMD = `${OCL_EXPLORER_ID}.refreshEntry`;

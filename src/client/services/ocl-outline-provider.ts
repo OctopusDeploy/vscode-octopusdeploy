@@ -7,7 +7,7 @@ import {
 	Parser,
 	LiteralType
 } from '@octopusdeploy/ocl';
-import { OCL_EXPLORER_ID, OCL_LANGUAGE_ID, OCL_OUTLINE_ADD_ENTRY_CMD, OCL_OUTLINE_REFRESH_ENTRY_CMD, OPEN_TO_POSITION_CMD } from '../constants';
+import { OCL_EXPLORER_ID, OCL_LANGUAGE_ID, OCL_OUTLINE_ADD_ENTRY_CMD, OCL_OUTLINE_REFRESH_ENTRY_CMD, OPEN_TO_POSITION_CMD, EXTENSION_CONFIGURATION_KEY } from '../constants';
 
 export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 	constructor(private workspaceRoot: string | undefined) {
@@ -124,12 +124,13 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 
 export class OclOutline {
 	private oclOutlineProvider;
+	private userSettings = vscode.workspace.getConfiguration(EXTENSION_CONFIGURATION_KEY);
 	private timeoutRef?: NodeJS.Timeout;
-
+	private onChangeDisposable?: vscode.Disposable;
+	private onSaveDisposable?: vscode.Disposable;
+	
 	constructor() {
 		this.oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
-
-		vscode.workspace.onDidChangeTextDocument(_ => this.onChangeRefresh());
 
 		vscode.window.registerTreeDataProvider(OCL_EXPLORER_ID, this.oclOutlineProvider);
 		vscode.window.onDidChangeActiveTextEditor(e => {
@@ -153,14 +154,30 @@ export class OclOutline {
 			lineNumber: lineNumber,
 			at: 'top'
 		}));
+
+		this.setOclRefreshBehaviour();
+		vscode.workspace.onDidChangeConfiguration(_ => {
+			this.userSettings = vscode.workspace.getConfiguration(EXTENSION_CONFIGURATION_KEY);
+			this.onSaveDisposable?.dispose();
+			this.onChangeDisposable?.dispose();
+			this.setOclRefreshBehaviour();
+		});
 	}
 
-	private onChangeRefresh() {
-		if (this.timeoutRef) {
-			clearTimeout(this.timeoutRef);
+	private setOclRefreshBehaviour() {
+		if (this.userSettings.get('oclTreeRefreshType') === 'automatic') {
+			this.onChangeDisposable = vscode.workspace.onDidChangeTextDocument(_ => {
+				if (this.timeoutRef) {
+					clearTimeout(this.timeoutRef);
+				}
+				this.timeoutRef = setTimeout(() => {
+					this.oclOutlineProvider.refresh();
+				}, this.userSettings.get('oclTreeRefreshInterval'));
+			});
 		}
-		this.timeoutRef = setTimeout(() => {
-			this.oclOutlineProvider.refresh();
-		}, 500);
+		
+		if (this.userSettings.get('oclTreeRefreshType') === 'on save') {
+			this.onSaveDisposable = vscode.workspace.onDidSaveTextDocument(_ => this.oclOutlineProvider.refresh());
+		}
 	}
 }

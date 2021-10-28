@@ -95,7 +95,27 @@
         "category": "Octopus",
         "icon": "$(extensions-refresh)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Octopus Deploy",
+      "properties": {
+        "octopus.oclTreeRefreshInterval": {
+          "type": "number",
+          "default": 500,
+          "markdownDescription": "Delay in milliseconds from last key press until OCL Outline is refreshed *(Ignored if 'Ocl Tree Refresh Type' is set to 'save')*"
+        },
+        "octopus.oclTreeRefreshType": {
+          "type": "string",
+          "default": "automatic",
+          "enum": ["automatic", "on save"],
+          "markdownDescription": "Refreshes the OCL Outline according to the following action",
+          "enumDescriptions": [
+            "Refreshes automatically following a delay from last key typed",
+            "Refreshes only when the file is saved ('Ocl Tree Refresh Interval' is ignored)"
+          ]
+        }
+      }
+    }
   },
   "icon": "assets/icons/octopus-deploy.png",
   "repository": {
