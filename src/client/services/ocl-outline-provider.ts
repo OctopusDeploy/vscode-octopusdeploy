@@ -128,7 +128,7 @@ export class OclOutline {
 	private timeoutRef?: NodeJS.Timeout;
 	private onChangeDisposable?: vscode.Disposable;
 	private onSaveDisposable?: vscode.Disposable;
-	
+
 	constructor() {
 		this.oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
 
@@ -144,11 +144,11 @@ export class OclOutline {
 		vscode.commands.registerCommand(OCL_OUTLINE_REFRESH_ENTRY_CMD, () => this.oclOutlineProvider.refresh());
 		vscode.commands.registerCommand(OCL_OUTLINE_ADD_ENTRY_CMD, () => {
 			vscode.commands.executeCommand('workbench.action.files.newUntitledFile')
-			.then(_ => {
-				if (vscode.window.activeTextEditor) {
-					vscode.languages.setTextDocumentLanguage(vscode.window.activeTextEditor.document, 'ocl');
-				}
-			});
+				.then(_ => {
+					if (vscode.window.activeTextEditor) {
+						vscode.languages.setTextDocumentLanguage(vscode.window.activeTextEditor.document, OCL_LANGUAGE_ID);
+					}
+				});
 		});
 		vscode.commands.registerCommand(OPEN_TO_POSITION_CMD, lineNumber => vscode.commands.executeCommand('revealLine', {
 			lineNumber: lineNumber,
@@ -175,7 +175,7 @@ export class OclOutline {
 				}, this.userSettings.get('oclTreeRefreshInterval'));
 			});
 		}
-		
+
 		if (this.userSettings.get('oclTreeRefreshType') === 'on save') {
 			this.onSaveDisposable = vscode.workspace.onDidSaveTextDocument(_ => this.oclOutlineProvider.refresh());
 		}
