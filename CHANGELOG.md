@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.15](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.14...v0.0.15) (2021-10-28)
+
+
+### Miscellaneous Chores
+
+* release 0.0.15 ([eb7c9f9](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/commit/eb7c9f97eadc3cd3670b6ef71759f02ad3564e9a))
+
 ### [0.0.14](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.13...v0.0.14) (2021-10-28)
 
 

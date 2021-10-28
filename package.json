@@ -3,7 +3,7 @@
   "name": "vscode-octopusdeploy",
   "displayName": "Octopus Deploy",
   "description": "Octopus Deploy for Visual Studio Code",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "publisher": "OctopusDeploy",
   "engines": {
     "vscode": "^1.61.0"
@@ -107,7 +107,10 @@
         "octopus.oclTreeRefreshType": {
           "type": "string",
           "default": "automatic",
-          "enum": ["automatic", "on save"],
+          "enum": [
+            "automatic",
+            "on save"
+          ],
           "markdownDescription": "Refreshes the OCL Outline according to the following action",
           "enumDescriptions": [
             "Refreshes automatically following a delay from last key typed",
