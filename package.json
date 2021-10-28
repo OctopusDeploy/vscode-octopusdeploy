@@ -79,11 +79,21 @@
         "contents": "Load an OCL file to see the document outline, or:\n[Add new OCL file](command:oclOutline.addEntry)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "oclOutline.refreshEntry",
+          "when": "view == oclOutline",
+          "group": "navigation"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "oclOutline.refreshEntry",
         "title": "Refresh",
-        "category": "Octopus"
+        "category": "Octopus",
+        "icon": "$(extensions-refresh)"
       }
     ]
   },
