@@ -123,24 +123,44 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 }
 
 export class OclOutline {
-	constructor() {
-		const oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
+	private oclOutlineProvider;
+	private timeoutRef?: NodeJS.Timeout;
 
-		vscode.window.registerTreeDataProvider(OCL_EXPLORER_ID, oclOutlineProvider);
+	constructor() {
+		this.oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
+
+		vscode.workspace.onDidChangeTextDocument(_ => this.onChangeRefresh());
+
+		vscode.window.registerTreeDataProvider(OCL_EXPLORER_ID, this.oclOutlineProvider);
 		vscode.window.onDidChangeActiveTextEditor(e => {
 			if (e?.document.languageId === OCL_LANGUAGE_ID) {
-				oclOutlineProvider.refresh();
+				this.oclOutlineProvider.refresh();
 			} else {
-				oclOutlineProvider.clear();
+				this.oclOutlineProvider.clear();
 			}
 		});
 
-		vscode.commands.registerCommand(OCL_OUTLINE_REFRESH_ENTRY_CMD, () => oclOutlineProvider.refresh());
-		// TODO - create custom command to set language mode
-		vscode.commands.registerCommand(OCL_OUTLINE_ADD_ENTRY_CMD, () => vscode.commands.executeCommand('workbench.action.files.newUntitledFile'));
+		vscode.commands.registerCommand(OCL_OUTLINE_REFRESH_ENTRY_CMD, () => this.oclOutlineProvider.refresh());
+		vscode.commands.registerCommand(OCL_OUTLINE_ADD_ENTRY_CMD, () => {
+			vscode.commands.executeCommand('workbench.action.files.newUntitledFile')
+			.then(_ => {
+				if (vscode.window.activeTextEditor) {
+					vscode.languages.setTextDocumentLanguage(vscode.window.activeTextEditor.document, 'ocl');
+				}
+			});
+		});
 		vscode.commands.registerCommand(OPEN_TO_POSITION_CMD, lineNumber => vscode.commands.executeCommand('revealLine', {
 			lineNumber: lineNumber,
 			at: 'top'
 		}));
+	}
+
+	private onChangeRefresh() {
+		if (this.timeoutRef) {
+			clearTimeout(this.timeoutRef);
+		}
+		this.timeoutRef = setTimeout(() => {
+			this.oclOutlineProvider.refresh();
+		}, 500);
 	}
 }
