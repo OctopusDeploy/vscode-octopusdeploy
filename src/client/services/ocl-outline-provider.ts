@@ -14,7 +14,7 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 		if (vscode.window.activeTextEditor) {
 			var activeDocument = vscode.window.activeTextEditor.document;
 
-			if (activeDocument) {
+			if (activeDocument && activeDocument.languageId === OCL_LANGUAGE_ID) {
 				const text = activeDocument.getText();
 				const lexer = new Lexer(text);
 				const parser = new Parser(lexer);
@@ -37,7 +37,7 @@ export class OclOutlineProvider implements vscode.TreeDataProvider<ASTNode> {
 		if (vscode.window.activeTextEditor) {
 			var activeDocument = vscode.window.activeTextEditor.document;
 
-			if (activeDocument) {
+			if (activeDocument && activeDocument.languageId === OCL_LANGUAGE_ID) {
 				const text = activeDocument.getText();
 				const lexer = new Lexer(text);
 				const parser = new Parser(lexer);
