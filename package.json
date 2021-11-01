@@ -76,7 +76,8 @@
     "viewsWelcome": [
       {
         "view": "oclOutline",
-        "contents": "Load an OCL file to see the document outline, or:\n[Add new OCL file](command:oclOutline.addEntry)"
+        "contents": "Load an OCL file to see the document outline, or:\n[Add new OCL file](command:oclOutline.addEntry)",
+        "when": "!octopus.activeEditorIsOcl"
       }
     ],
     "menus": {
@@ -93,7 +94,8 @@
         "command": "oclOutline.refreshEntry",
         "title": "Refresh",
         "category": "Octopus",
-        "icon": "$(extensions-refresh)"
+        "icon": "$(extensions-refresh)",
+        "enablement": "octopus.activeEditorIsOcl"
       }
     ],
     "configuration": {
