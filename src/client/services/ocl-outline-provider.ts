@@ -132,12 +132,16 @@ export class OclOutline {
 	constructor() {
 		this.oclOutlineProvider = new OclOutlineProvider(vscode.workspace.rootPath);
 
+		this.setActiveEditorOclContext(vscode.window.activeTextEditor?.document.languageId === 'ocl');
+
 		vscode.window.registerTreeDataProvider(OCL_EXPLORER_ID, this.oclOutlineProvider);
 		vscode.window.onDidChangeActiveTextEditor(e => {
 			if (e?.document.languageId === OCL_LANGUAGE_ID) {
+				this.setActiveEditorOclContext(true);
 				this.oclOutlineProvider.refresh();
 			} else {
 				this.oclOutlineProvider.clear();
+				this.setActiveEditorOclContext(false);
 			}
 		});
 
@@ -147,6 +151,7 @@ export class OclOutline {
 				.then(_ => {
 					if (vscode.window.activeTextEditor) {
 						vscode.languages.setTextDocumentLanguage(vscode.window.activeTextEditor.document, OCL_LANGUAGE_ID);
+						this.setActiveEditorOclContext(true);
 					}
 				});
 		});
@@ -179,5 +184,9 @@ export class OclOutline {
 		if (this.userSettings.get('oclTreeRefreshType') === 'on save') {
 			this.onSaveDisposable = vscode.workspace.onDidSaveTextDocument(_ => this.oclOutlineProvider.refresh());
 		}
+	}
+
+	private setActiveEditorOclContext(isOcl: boolean) {
+		vscode.commands.executeCommand('setContext', 'octopus.activeEditorIsOcl', isOcl);
 	}
 }
