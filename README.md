@@ -1,4 +1,4 @@
-# Octopus Deploy for Visual Studio Code
+# :octopus: Octopus Deploy for Visual Studio Code
 
 ![image](https://user-images.githubusercontent.com/71493/137660273-0804da96-d744-49c8-a5f6-02b0a7cc5a35.png)
 
