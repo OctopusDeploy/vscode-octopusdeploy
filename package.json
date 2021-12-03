@@ -58,18 +58,24 @@
       "activitybar": [
         {
           "icon": "/assets/icons/octopus-deploy.svg",
-          "id": "octopusView",
-          "title": "Octopus Explorer"
+          "id": "octopusDeploy",
+          "title": "Octopus Deploy"
         }
       ]
     },
     "views": {
-      "octopusView": [
+      "octopusDeploy": [
         {
-          "contextualTitle": "Octopus Explorer",
+          "contextualTitle": "Octopus Deploy",
           "icon": "/assets/icons/octopus-deploy.svg",
           "id": "oclOutline",
           "name": "OCL Outline"
+        },
+        {
+          "contextualTitle": "Octopus Deploy",
+          "icon": "/assets/icons/octopus-deploy.svg",
+          "id": "octopusExplorer",
+          "name": "Explorer"
         }
       ]
     },
@@ -96,6 +102,21 @@
         "category": "Octopus",
         "icon": "$(extensions-refresh)",
         "enablement": "octopus.activeEditorIsOcl"
+      },
+      {
+        "command": "octopusDeploy.setApiKey",
+        "category": "Octopus Deploy",
+        "title": "Set API key used to access instance"
+      },
+      {
+        "command": "octopusDeploy.setApiUri",
+        "category": "Octopus Deploy",
+        "title": "Set API URI of target instance"
+      },
+      {
+        "command": "octopusDeploy.setSpace",
+        "category": "Octopus Deploy",
+        "title": "Set space to scope operations against target instance"
       }
     ],
     "configuration": {
@@ -139,23 +160,32 @@
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
-    "@types/vscode": "^1.61.0",
+    "@types/vscode": "^1.62.0",
     "@types/webpack-env": "^1.16.3",
-    "@typescript-eslint/eslint-plugin": "^5.2.0",
-    "@typescript-eslint/parser": "^5.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "@vscode/test-web": "^0.0.15",
     "assert": "^2.0.0",
-    "eslint": "^8.1.0",
+    "browserify-zlib": "^0.2.0",
+    "eslint": "^8.3.0",
+    "https-browserify": "^1.0.0",
     "mocha": "^9.1.3",
+    "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "ts-loader": "^9.2.6",
-    "typescript": "^4.4.4",
-    "vsce": "^1.100.2",
-    "webpack": "^5.60.0",
+    "tty-browserify": "^0.0.1",
+    "typescript": "^4.5.2",
+    "url": "^0.11.0",
+    "vsce": "^2.5.1",
+    "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "@octopusdeploy/api-client": "^1.1.7",
+    "@octopusdeploy/message-contracts": "^1.1.1",
     "@octopusdeploy/ocl": "^0.1.0"
   }
 }
