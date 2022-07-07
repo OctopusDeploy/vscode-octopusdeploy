@@ -1,0 +1,78 @@
+name: Build
+
+on:
+  push:
+  schedule:
+    # Daily 5am australian/brisbane time (7pm UTC)
+    - cron: "0 19 * * *"
+  release:
+    types: [created]
+env:
+  OCTOPUS_CLI_SERVER: ${{ secrets.OCTOPUS_URL }}
+  OCTOPUS_CLI_API_KEY: ${{ secrets.INTEGRATIONS_API_KEY }}
+
+jobs:
+  build:
+    name: Build code
+    runs-on: ubuntu-latest
+    outputs:
+      package_version: ${{ steps.build.outputs.package_version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - name: Build
+        id: build
+        run: |
+          npm ci
+          MAJOR_MINOR=$(jq '.version' package.json | sed 's/"//g' | sed 's/\.[0-9]*$//g')
+          export VERSION=${MAJOR_MINOR}.${{github.run_number}}
+          echo Version: $VERSION
+          tmp=$(mktemp)
+          jq '.version=env.VERSION' package.json > "$tmp" && mv "$tmp" package.json
+          npm run pack
+          echo "::set-output name=package_version::$VERSION"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: vscode-octopusdeploy-${{ steps.build.outputs.package_version }}.vsix
+          path: vscode-octopusdeploy-${{ steps.build.outputs.package_version }}.vsix
+  package:
+    name: Package and Push artifacts to Octopus
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: (github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]')
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
+          path: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+      - name: Create Package
+        id: create-packages
+        run: |
+          tar -czf vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
+      - name: Install Octopus CLI 🐙
+        uses: OctopusDeploy/install-octopus-cli-action@v1
+        with:
+          version: "*"
+      - name: Push Package 🐙
+        uses: OctopusDeploy/push-package-action@v1
+        with:
+          space: "Integrations"
+          packages: |
+            vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz
+      - name: Create a release in Octopus Deploy 🐙
+        uses: OctopusDeploy/create-release-action@v1.1.1
+        with:
+          space: "Integrations"
+          project: "Visual Studio Code Plugin"
+          package_version: ${{ needs.build.outputs.package_version }}
+          channel: ${{ (github.event_name == 'release' && 'Public') || (github.event_name == 'schedule' && 'Nightly-Builds') || 'Branch-Builds' }}
