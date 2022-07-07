@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.0...v0.1.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* wrong package name in build ([#57](https://github.com/OctopusDeploy/vscode-octopusdeploy/issues/57)) ([725e13f](https://github.com/OctopusDeploy/vscode-octopusdeploy/commit/725e13fd18e8392271f5c1809cdacf9053a733ba))
+
 ## [0.1.0](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.17...v0.1.0) (2022-07-07)
 
 
