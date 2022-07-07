@@ -43,7 +43,7 @@ jobs:
     name: Package and Push artifacts to Octopus
     needs: [build]
     runs-on: ubuntu-latest
-    if: (github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]')
+    if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
@@ -69,6 +69,13 @@ jobs:
           space: "Integrations"
           packages: |
             vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz
+      - name: Push build information to Octopus Deploy 🐙
+        if: ${{ github.event_name == 'release' }}
+        uses: OctopusDeploy/push-build-information-action@v1
+        with:
+          package: |
+            'vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz'
+          version: '${{ needs.build.outputs.package_version }}'
       - name: Create a release in Octopus Deploy 🐙
         uses: OctopusDeploy/create-release-action@v1.1.1
         with:
