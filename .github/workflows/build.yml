@@ -28,11 +28,7 @@ jobs:
         id: build
         run: |
           npm ci
-          MAJOR_MINOR=$(jq '.version' package.json | sed 's/"//g' | sed 's/\.[0-9]*$//g')
-          export VERSION=${MAJOR_MINOR}.${{github.run_number}}
-          echo Version: $VERSION
-          tmp=$(mktemp)
-          jq '.version=env.VERSION' package.json > "$tmp" && mv "$tmp" package.json
+          export VERSION=$(jq '.version' package.json | sed 's/"//g')
           npm run pack
           echo "::set-output name=package_version::$VERSION"
       - uses: actions/upload-artifact@v3
@@ -43,7 +39,7 @@ jobs:
     name: Package and Push artifacts to Octopus
     needs: [build]
     runs-on: ubuntu-latest
-    if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'}}
+    if: ${{ github.event_name == 'release' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
@@ -82,4 +78,4 @@ jobs:
           space: "Integrations"
           project: "Visual Studio Code Plugin"
           package_version: ${{ needs.build.outputs.package_version }}
-          channel: ${{ (github.event_name == 'release' && 'Public') || (github.event_name == 'schedule' && 'Nightly-Builds') || 'Branch-Builds' }}
+          channel: ${{ 'Public' }}
