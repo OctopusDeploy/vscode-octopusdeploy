@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.17...v0.1.0) (2022-07-07)
+
+
+### Features
+
+* new build pipeline ([4788381](https://github.com/OctopusDeploy/vscode-octopusdeploy/commit/47883813538637d0337265733dcf737c69d16920))
+
 ### [0.0.17](https://www.github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.0.16...v0.0.17) (2021-11-01)
 
 
