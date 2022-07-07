@@ -10,6 +10,9 @@ on:
 env:
   OCTOPUS_CLI_SERVER: ${{ secrets.OCTOPUS_URL }}
   OCTOPUS_CLI_API_KEY: ${{ secrets.INTEGRATIONS_API_KEY }}
+  OCTOPUS_HOST: ${{ secrets.OCTOPUS_URL }}
+  OCTOPUS_API_KEY: ${{ secrets.INTEGRATIONS_API_KEY }}
+  OCTOPUS_SPACE: 'Spaces-62'
 
 jobs:
   build:
