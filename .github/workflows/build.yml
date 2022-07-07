@@ -69,7 +69,7 @@ jobs:
         if: ${{ github.event_name == 'release' }}
         uses: OctopusDeploy/push-build-information-action@v1
         with:
-          package: |
+          packages: |
             'vscode-octopusdeploy'
           version: '${{ needs.build.outputs.package_version }}'
       - name: Create a release in Octopus Deploy 🐙
