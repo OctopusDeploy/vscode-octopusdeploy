@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.3...v0.1.4) (2022-07-07)
+
+
+### Bug Fixes
+
+* removed quotes from package name in push-build-information-action ([#63](https://github.com/OctopusDeploy/vscode-octopusdeploy/issues/63)) ([504a2b6](https://github.com/OctopusDeploy/vscode-octopusdeploy/commit/504a2b6e3f5a577cbd00e4022e4a129ffadb79f2))
+
 ## [0.1.3](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.2...v0.1.3) (2022-07-07)
 
 
