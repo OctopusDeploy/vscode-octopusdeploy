@@ -6,7 +6,7 @@
   "version": "0.0.17",
   "publisher": "OctopusDeploy",
   "engines": {
-    "vscode": "^1.61.0"
+    "vscode": "^1.64.0"
   },
   "bugs": {
     "url": "https://github.com/OctopusDeploy/vscode-octopusdeploy/issues",
@@ -130,6 +130,7 @@
   "scripts": {
     "chrome": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=.",
     "compile": "webpack",
+    "pack": "vsce package",
     "deploy": "vsce publish",
     "lint": "eslint src --ext ts",
     "package": "webpack --mode production --devtool hidden-source-map",
