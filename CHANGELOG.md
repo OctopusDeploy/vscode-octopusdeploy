@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.1...v0.1.2) (2022-07-07)
+
+
+### Bug Fixes
+
+* typo in push-build-information-action ([#59](https://github.com/OctopusDeploy/vscode-octopusdeploy/issues/59)) ([cd785ab](https://github.com/OctopusDeploy/vscode-octopusdeploy/commit/cd785abf377d19ea57974a3dabc48069a62a4490))
+
 ## [0.1.1](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.0...v0.1.1) (2022-07-07)
 
 
