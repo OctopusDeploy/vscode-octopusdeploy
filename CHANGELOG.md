@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.2...v0.1.3) (2022-07-07)
+
+
+### Bug Fixes
+
+* missing env vars in build workflow ([#61](https://github.com/OctopusDeploy/vscode-octopusdeploy/issues/61)) ([2466e12](https://github.com/OctopusDeploy/vscode-octopusdeploy/commit/2466e12cb2727e6cb3f4f0610298aea0b0b504f3))
+
 ## [0.1.2](https://github.com/OctopusDeploy/vscode-octopusdeploy/compare/v0.1.1...v0.1.2) (2022-07-07)
 
 
