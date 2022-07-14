@@ -63,7 +63,7 @@ jobs:
         with:
           version: "*"
       - name: Push Package 🐙
-        uses: OctopusDeploy/push-package-action@v1
+        uses: OctopusDeploy/push-package-action@v2
         with:
           space: "Integrations"
           packages: |
