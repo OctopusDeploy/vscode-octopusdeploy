@@ -76,7 +76,7 @@ jobs:
             vscode-octopusdeploy
           version: '${{ needs.build.outputs.package_version }}'
       - name: Create a release in Octopus Deploy 🐙
-        uses: OctopusDeploy/create-release-action@v1.1.1
+        uses: OctopusDeploy/create-release-action@v2.0.1
         with:
           space: "Integrations"
           project: "Visual Studio Code Plugin"
