@@ -70,7 +70,7 @@ jobs:
             vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz
       - name: Push build information to Octopus Deploy 🐙
         if: ${{ github.event_name == 'release' }}
-        uses: OctopusDeploy/push-build-information-action@v1
+        uses: OctopusDeploy/push-build-information-action@v2
         with:
           packages: |
             vscode-octopusdeploy
