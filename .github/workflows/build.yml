@@ -70,13 +70,13 @@ jobs:
             vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz
       - name: Push build information to Octopus Deploy 🐙
         if: ${{ github.event_name == 'release' }}
-        uses: OctopusDeploy/push-build-information-action@v1
+        uses: OctopusDeploy/push-build-information-action@v2
         with:
           packages: |
             vscode-octopusdeploy
           version: '${{ needs.build.outputs.package_version }}'
       - name: Create a release in Octopus Deploy 🐙
-        uses: OctopusDeploy/create-release-action@v1.1.1
+        uses: OctopusDeploy/create-release-action@v2
         with:
           space: "Integrations"
           project: "Visual Studio Code Plugin"
