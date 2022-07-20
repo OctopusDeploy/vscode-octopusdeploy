@@ -157,6 +157,6 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@octopusdeploy/ocl": "^0.1.0"
+    "@octopusdeploy/ocl": "^0.1.1"
   }
 }
