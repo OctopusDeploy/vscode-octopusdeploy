@@ -34,7 +34,7 @@ jobs:
           export VERSION=$(jq '.version' package.json | sed 's/"//g')
           npm run pack
           echo "::set-output name=package_version::$VERSION"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: vscode-octopusdeploy-${{ steps.build.outputs.package_version }}.vsix
           path: vscode-octopusdeploy-${{ steps.build.outputs.package_version }}.vsix
@@ -45,7 +45,7 @@ jobs:
     if: ${{ github.event_name == 'release' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
           path: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
