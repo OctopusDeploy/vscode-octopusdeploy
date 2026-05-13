@@ -44,13 +44,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
           path: vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: "16"
           cache: "npm"
@@ -59,24 +59,24 @@ jobs:
         run: |
           tar -czf vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz vscode-octopusdeploy-${{ needs.build.outputs.package_version }}.vsix
       - name: Install Octopus CLI 🐙
-        uses: OctopusDeploy/install-octopus-cli-action@v1
+        uses: OctopusDeploy/install-octopus-cli-action@v4
         with:
           version: "*"
       - name: Push Package 🐙
-        uses: OctopusDeploy/push-package-action@v2
+        uses: OctopusDeploy/push-package-action@v4
         with:
           space: "Integrations"
           packages: |
             vscode-octopusdeploy.${{ needs.build.outputs.package_version }}.tar.gz
       - name: Push build information to Octopus Deploy 🐙
         if: ${{ github.event_name == 'release' }}
-        uses: OctopusDeploy/push-build-information-action@v1
+        uses: OctopusDeploy/push-build-information-action@v3
         with:
           packages: |
             vscode-octopusdeploy
           version: '${{ needs.build.outputs.package_version }}'
       - name: Create a release in Octopus Deploy 🐙
-        uses: OctopusDeploy/create-release-action@v1.1.1
+        uses: OctopusDeploy/create-release-action@v3
         with:
           space: "Integrations"
           project: "Visual Studio Code Plugin"

@@ -11,3 +11,9 @@ Octopus Deploy for Visual Studio Code is an extension that supports the Octopus 
 - Syntax highlighting of OCL files
 - OCL snippets for various resources like steps, actions, and more
 - Integrated tree view for navigating nodes in an OCL file
+
+## For Octopus Deploy maintainers:
+ - https://marketplace.visualstudio.com/manage/publishers/octopusdeploy is the company entry point.
+ - FAQ:
+   - Q: The extension reports "Octopus Deploy is not verified" on the https://marketplace.visualstudio.com/publishers/octopusdeploy page
+   - A: It means the verification has lapsed, this has happened at least once, since we first verified in 2021. You'll need access to https://marketplace.visualstudio.com/manage/publishers/octopusdeploy to repeat the verification process, with help from security team as it requires an update to DNS TXT record.
