@@ -13,8 +13,8 @@
     "url": "https://github.com/OctopusDeploy/vscode-octopusdeploy"
   },
   "dependencies": {
-    "vscode-languageserver": "^7.0.0",
-    "vscode-languageserver-textdocument": "^1.0.2"
+    "vscode-languageserver": "^10.1.0",
+    "vscode-languageserver-textdocument": "^1.0.12"
   },
   "scripts": {}
 }
